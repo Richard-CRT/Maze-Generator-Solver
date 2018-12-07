@@ -12,12 +12,13 @@ namespace MazeGeneratorSolver
 {
     public enum Direction { Entry, North, East, South, West };
     public enum SolveStatus { NotVisited, Visited, Incorrect, Correct, StartEnd };
+    public enum MazeGenerationAlgorithm { RecursiveBacktracking, Kruskals };
 
     public partial class Maze : UserControl
     {
         private const int gridCellSize = 20;
-        private const int GridWidth = 90;
-        private const int GridHeight = 40;
+        public const int GridWidth = 150;
+        public const int GridHeight = 50;
 
         private int StartX;
         private int StartY;
@@ -29,6 +30,10 @@ namespace MazeGeneratorSolver
         private Random rng = new Random();
 
         List<List<GridCell>> grid = new List<List<GridCell>>();
+
+        public int RedVisited = 0;
+        public int WhiteVisited = 0;
+        public int Solutions = 0;
 
         public Maze()
         {
@@ -56,7 +61,7 @@ namespace MazeGeneratorSolver
             }
         }
 
-        public void GenerateMaze()
+        public void GenerateMaze(MazeGenerationAlgorithm algorithm)
         {
             StartX = rng.Next(0, GridWidth);
             StartY = rng.Next(0, GridHeight);
@@ -72,7 +77,15 @@ namespace MazeGeneratorSolver
                 }
             }
 
-            carve_passages_from(StartX, StartY);
+            switch (algorithm)
+            {
+                case MazeGenerationAlgorithm.RecursiveBacktracking:
+                    carve_passages_from(StartX, StartY);
+                    break;
+                case MazeGenerationAlgorithm.Kruskals:
+                    KruskalGenerate();
+                    break;
+            }
 
             grid[StartY][StartX].SolveStatus = SolveStatus.StartEnd;
             grid[EndY][EndX].SolveStatus = SolveStatus.StartEnd;
@@ -92,73 +105,6 @@ namespace MazeGeneratorSolver
                 T temp = array[n];
                 array[n] = array[k];
                 array[k] = temp;
-            }
-        }
-
-        private void carve_passages_from(int x, int y)
-        {
-            Direction[] directions = new Direction[] { Direction.North, Direction.East, Direction.South, Direction.West };
-            Shuffle(directions);
-
-            foreach (Direction direction in directions)
-            {
-                int nx, ny;
-                switch (direction)
-                {
-                    case Direction.North:
-                        nx = x;
-                        ny = y - 1;
-
-                        if (ny >= 0 && !grid[ny][nx].Visited)
-                        {
-                            grid[y][x].NorthWall = false;
-                            grid[ny][nx].SouthWall = false;
-                            carve_passages_from(nx, ny);
-                        }
-
-                        break;
-                    case Direction.East:
-                        nx = x + 1;
-                        ny = y;
-
-                        if (nx < GridWidth && !grid[ny][nx].Visited)
-                        {
-                            grid[y][x].EastWall = false;
-                            grid[ny][nx].WestWall = false;
-                            carve_passages_from(nx, ny);
-                        }
-
-                        break;
-                    case Direction.South:
-                        nx = x;
-                        ny = y + 1;
-
-                        if (ny < GridHeight && !grid[ny][nx].Visited)
-                        {
-                            grid[y][x].SouthWall = false;
-                            grid[ny][nx].NorthWall = false;
-                            carve_passages_from(nx, ny);
-                        }
-
-                        break;
-                    case Direction.West:
-                        nx = x - 1;
-                        ny = y;
-
-                        if (nx >= 0 && !grid[ny][nx].Visited)
-                        {
-                            grid[y][x].WestWall = false;
-                            grid[ny][nx].EastWall = false;
-                            carve_passages_from(nx, ny);
-                        }
-
-                        break;
-                    default:
-                        // should never be here
-                        nx = x;
-                        ny = y;
-                        break;
-                }
             }
         }
 
@@ -184,6 +130,21 @@ namespace MazeGeneratorSolver
             }
 
             SolveRun = true;
+            Solutions++;
+            for (int y = 0; y < GridHeight; y++)
+            {
+                for (int x = 0; x < GridWidth; x++)
+                {
+                    if (grid[y][x].SolveStatus == SolveStatus.Incorrect)
+                    {
+                        RedVisited++;
+                    }
+                    else if (grid[y][x].SolveStatus == SolveStatus.NotVisited)
+                    {
+                        WhiteVisited++;
+                    }
+                }
+            }
         }
 
         private bool NorthCheck(Direction entryWall, int x, int y)

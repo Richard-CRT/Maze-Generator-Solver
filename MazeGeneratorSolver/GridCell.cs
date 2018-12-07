@@ -145,6 +145,9 @@ namespace MazeGeneratorSolver
             enableRedraw = true;
 
             this.Visited = false;
+
+            // This is only needed if the maze generator doesn't visit every cell
+            //this.Redraw();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -158,9 +161,9 @@ namespace MazeGeneratorSolver
             using (SolidBrush startEndCell = new SolidBrush(Color.DeepSkyBlue))
             {
                 Point topLeft = new Point(0, 0);
-                Point topRight = new Point(this.Size.Width-1, 0);
-                Point bottomLeft = new Point(0, this.Size.Height-1);
-                Point bottomRight = new Point(this.Size.Width-1, this.Size.Height-1);
+                Point topRight = new Point(this.Size.Width - 1, 0);
+                Point bottomLeft = new Point(0, this.Size.Height - 1);
+                Point bottomRight = new Point(this.Size.Width - 1, this.Size.Height - 1);
 
                 Rectangle cellRect = new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X + 1, bottomRight.Y - topLeft.Y + 1);
 
