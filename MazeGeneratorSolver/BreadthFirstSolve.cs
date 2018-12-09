@@ -134,7 +134,9 @@ namespace MazeGeneratorSolver
                 {
                     if (grid[y][x].SolveStatus == SolveStatus.Visited)
                     {
+                        grid[y][x].EnableDelay = false;
                         grid[y][x].SolveStatus = SolveStatus.Incorrect;
+                        grid[y][x].EnableDelay = true;
                     }
                 }
             }

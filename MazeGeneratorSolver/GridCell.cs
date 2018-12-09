@@ -14,6 +14,7 @@ namespace MazeGeneratorSolver
     {
         private bool northWall = true;
         private bool enableRedraw = true;
+        public bool EnableDelay = true;
         public bool NorthWall
         {
             get
@@ -99,7 +100,7 @@ namespace MazeGeneratorSolver
                 if (solveStatus != SolveStatus.StartEnd || value == SolveStatus.NotVisited)
                 {
                     solveStatus = value;
-                    if (value != SolveStatus.NotVisited)
+                    if (EnableDelay)
                     {
                         RedrawDelay();
                     }

@@ -18,8 +18,8 @@ namespace MazeGeneratorSolver
     public partial class Maze : UserControl
     {
         private const int gridCellSize = 20;
-        public const int GridWidth = 50; // 90
-        public const int GridHeight = 30; // 40
+        public const int GridWidth = 90; // 90
+        public const int GridHeight = 40; // 40
 
         private int StartX;
         private int StartY;
@@ -121,7 +121,9 @@ namespace MazeGeneratorSolver
                         {
                             if ((x != StartX || y != StartY) && (x != EndX || y != EndY))
                             {
+                                grid[y][x].EnableDelay = false;
                                 grid[y][x].SolveStatus = SolveStatus.NotVisited;
+                                grid[y][x].EnableDelay = true;
                             }
                         }
                     }
