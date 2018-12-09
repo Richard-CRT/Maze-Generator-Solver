@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DepthFirstSolve.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="FormMaze.cs">
       <SubType>Form</SubType>
     </Compile>

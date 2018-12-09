@@ -17,8 +17,8 @@ namespace MazeGeneratorSolver
     public partial class Maze : UserControl
     {
         private const int gridCellSize = 20;
-        public const int GridWidth = 150;
-        public const int GridHeight = 50;
+        public const int GridWidth = 90;
+        public const int GridHeight = 40;
 
         private int StartX;
         private int StartY;
@@ -126,7 +126,7 @@ namespace MazeGeneratorSolver
                     }
                 }
 
-                solve(Direction.Entry, StartX, StartY);
+                DepthFirstSolve(Direction.Entry, StartX, StartY);
             }
 
             SolveRun = true;
@@ -145,119 +145,6 @@ namespace MazeGeneratorSolver
                     }
                 }
             }
-        }
-
-        private bool NorthCheck(Direction entryWall, int x, int y)
-        {
-            if (!grid[y][x].NorthWall && entryWall != Direction.North)
-            {
-                int nx = x;
-                int ny = y - 1;
-
-                if (solve(Direction.South, nx, ny))
-                {
-                    grid[y][x].SolveStatus = SolveStatus.Correct;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool EastCheck(Direction entryWall, int x, int y)
-        {
-            if (!grid[y][x].EastWall && entryWall != Direction.East)
-            {
-                int nx = x + 1;
-                int ny = y;
-
-                if (solve(Direction.West, nx, ny))
-                {
-                    grid[y][x].SolveStatus = SolveStatus.Correct;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool SouthCheck(Direction entryWall, int x, int y)
-        {
-            if (!grid[y][x].SouthWall && entryWall != Direction.South)
-            {
-                int nx = x;
-                int ny = y + 1;
-
-                if (solve(Direction.North, nx, ny))
-                {
-                    grid[y][x].SolveStatus = SolveStatus.Correct;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool WestCheck(Direction entryWall, int x, int y)
-        {
-            if (!grid[y][x].WestWall && entryWall != Direction.West)
-            {
-                int nx = x - 1;
-                int ny = y;
-
-                if (solve(Direction.East, nx, ny))
-                {
-                    grid[y][x].SolveStatus = SolveStatus.Correct;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool solve(Direction entryWall, int x, int y)
-        {
-            grid[y][x].SolveStatus = SolveStatus.Visited;
-            if (x == EndX && y == EndY)
-            {
-                grid[y][x].SolveStatus = SolveStatus.Correct;
-                return true;
-            }
-
-            Direction[] directions = new Direction[] { Direction.North, Direction.East, Direction.South, Direction.West };
-            Shuffle(directions);
-
-
-            foreach (Direction direction in directions)
-            {
-                switch (direction)
-                {
-                    case Direction.North:
-                        if (NorthCheck(entryWall, x, y))
-                        {
-                            return true;
-                        }
-                        break;
-                    case Direction.East:
-                        if (EastCheck(entryWall, x, y))
-                        {
-                            return true;
-                        }
-                        break;
-                    case Direction.South:
-                        if (SouthCheck(entryWall, x, y))
-                        {
-                            return true;
-                        }
-                        break;
-                    case Direction.West:
-                        if (WestCheck(entryWall, x, y))
-                        {
-                            return true;
-                        }
-                        break;
-                }
-            }
-
-            // deadend
-            grid[y][x].SolveStatus = SolveStatus.Incorrect;
-            return false;
         }
 
         protected override void OnPaint(PaintEventArgs e)

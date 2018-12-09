@@ -31,13 +31,14 @@ namespace MazeGeneratorSolver
             GroupBoxGenerationMethod.Enabled = false;
         }
 
-        private async void ButtonGenerate_Click(object sender, EventArgs e)
+        private void ButtonGenerate_Click(object sender, EventArgs e)
         {
             ButtonGenerate.Enabled = false;
             ButtonSolve.Enabled = false;
             TrackBarDelay.Enabled = false;
             GroupBoxGenerationMethod.Enabled = false;
 
+            /*
             while (true)
             {
                 MazeGenerationAlgorithm algorithm;
@@ -60,6 +61,18 @@ namespace MazeGeneratorSolver
                 LabelStats.Text = String.Format("   White: {0}   % White: {1}   Red: {2}   % Red: {3}", Maze.WhiteVisited, (averageWhite / count) * 100, Maze.RedVisited, (averageRed / count) * 100);
                 await waitForSolution();
             }
+            */
+
+            MazeGenerationAlgorithm algorithm;
+            if (RadioButtonRecursiveBacktracking.Checked)
+            {
+                algorithm = MazeGenerationAlgorithm.RecursiveBacktracking;
+            }
+            else
+            {
+                algorithm = MazeGenerationAlgorithm.Kruskals;
+            }
+            Maze.GenerateMaze(algorithm);
 
             ButtonGenerate.Enabled = true;
             ButtonSolve.Enabled = true;
