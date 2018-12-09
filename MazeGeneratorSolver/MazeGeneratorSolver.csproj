@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreadthFirstSolve.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DepthFirstSolve.cs">
       <SubType>UserControl</SubType>
     </Compile>

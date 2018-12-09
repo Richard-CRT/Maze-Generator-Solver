@@ -13,12 +13,13 @@ namespace MazeGeneratorSolver
     public enum Direction { Entry, North, East, South, West };
     public enum SolveStatus { NotVisited, Visited, Incorrect, Correct, StartEnd };
     public enum MazeGenerationAlgorithm { RecursiveBacktracking, Kruskals };
+    public enum MazeSolverAlgorithm { DepthFirst, BreadthFirst };
 
     public partial class Maze : UserControl
     {
         private const int gridCellSize = 20;
-        public const int GridWidth = 90;
-        public const int GridHeight = 40;
+        public const int GridWidth = 50; // 90
+        public const int GridHeight = 30; // 40
 
         private int StartX;
         private int StartY;
@@ -108,7 +109,7 @@ namespace MazeGeneratorSolver
             }
         }
 
-        public void SolveMaze()
+        public void SolveMaze(MazeSolverAlgorithm algorithm)
         {
             if (grid.Count > 0 && grid[0].Count > 0)
             {
@@ -126,7 +127,15 @@ namespace MazeGeneratorSolver
                     }
                 }
 
-                DepthFirstSolve(Direction.Entry, StartX, StartY);
+                switch (algorithm)
+                {
+                    case MazeSolverAlgorithm.DepthFirst:
+                        DepthFirstSolve(Direction.Entry, StartX, EndX);
+                        break;
+                    case MazeSolverAlgorithm.BreadthFirst:
+                        BreadthFirstSolve(Direction.Entry);
+                        break;
+                }
             }
 
             SolveRun = true;

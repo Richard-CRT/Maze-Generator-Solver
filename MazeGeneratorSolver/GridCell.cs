@@ -99,7 +99,14 @@ namespace MazeGeneratorSolver
                 if (solveStatus != SolveStatus.StartEnd || value == SolveStatus.NotVisited)
                 {
                     solveStatus = value;
-                    RedrawDelay();
+                    if (value != SolveStatus.NotVisited)
+                    {
+                        RedrawDelay();
+                    }
+                    else
+                    {
+                        Redraw();
+                    }
                 }
             }
         }

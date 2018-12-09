@@ -41,17 +41,27 @@ namespace MazeGeneratorSolver
             /*
             while (true)
             {
-                MazeGenerationAlgorithm algorithm;
+                MazeGenerationAlgorithm generationAlgorithm;
                 if (RadioButtonRecursiveBacktracking.Checked)
                 {
-                    algorithm = MazeGenerationAlgorithm.RecursiveBacktracking;
+                    generationAlgorithm = MazeGenerationAlgorithm.RecursiveBacktracking;
                 }
                 else
                 {
-                    algorithm = MazeGenerationAlgorithm.Kruskals;
+                    generationAlgorithm = MazeGenerationAlgorithm.Kruskals;
                 }
-                Maze.GenerateMaze(algorithm);
-                Maze.SolveMaze();
+                Maze.GenerateMaze(generationAlgorithm);
+
+                MazeSolverAlgorithm solverAlgorithm;
+                if (RadioButtonDepthFirst.Checked)
+                {
+                    solverAlgorithm = MazeSolverAlgorithm.DepthFirst;
+                }
+                else
+                {
+                    solverAlgorithm = MazeSolverAlgorithm.BreadthFirst;
+                }
+                Maze.SolveMaze(solverAlgorithm);
 
                 int count = Maze.GridWidth * Maze.GridHeight;
 
@@ -85,7 +95,18 @@ namespace MazeGeneratorSolver
             ButtonGenerate.Enabled = false;
             ButtonSolve.Enabled = false;
             TrackBarDelay.Enabled = false;
-            Maze.SolveMaze();
+
+            MazeSolverAlgorithm algorithm;
+            if (RadioButtonDepthFirst.Checked)
+            {
+                algorithm = MazeSolverAlgorithm.DepthFirst;
+            }
+            else
+            {
+                algorithm = MazeSolverAlgorithm.BreadthFirst;
+            }
+            Maze.SolveMaze(algorithm);
+
             ButtonGenerate.Enabled = true;
             ButtonSolve.Enabled = true;
             TrackBarDelay.Enabled = true;
